@@ -19,7 +19,37 @@ function QuestionForm(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
+    
+    const itemData = {
+      prompt: event.target.prompt.value,
+      answers: [ 
+        event.target.answer1.value,
+        event.target.answer2.value,
+        event.target.answer3.value,
+        event.target.answer4.value,
+      ],
+      correctIndex: event.target.correctIndex.value,
+    }
+
+    setFormData({
+      prompt: "",
+      answer1: "",
+      answer2: "",
+      answer3: "",
+      answer4: "",
+      correctIndex: 0,
+  })
+    console.log(itemData)
+    
+    fetch("http://localhost:4000/questions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(itemData)
+    })
+      .then((res)=> res.json())
+      .then((newItem)=>props.onAddQuestion(newItem)) 
   }
 
   return (
